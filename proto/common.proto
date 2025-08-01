@@ -1,0 +1,9 @@
+syntax = "proto3";
+package shadowvault.common;
+
+option go_package = "github.com/hoangsonww/shadowvault/proto/common;common";
+
+message Ack {
+  bool ok = 1;
+  string message = 2;
+}

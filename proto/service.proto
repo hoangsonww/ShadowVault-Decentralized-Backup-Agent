@@ -1,0 +1,19 @@
+syntax = "proto3";
+package shadowvault.service;
+
+import "google/protobuf/empty.proto";
+import "shadowvault/common.proto";
+import "shadowvault/snapshot.proto";
+import "shadowvault/block.proto";
+import "shadowvault/peer.proto";
+
+option go_package = "github.com/hoangsonww/shadowvault/proto/service;service";
+
+// gRPC service as an optional RPC layer overlaying the P2P protocols.
+service ShadowVault {
+  rpc AnnounceSnapshot(shadowvault.snapshot.SnapshotAnnouncement) returns (shadowvault.common.Ack);
+  rpc RequestBlock(shadowvault.block.BlockRequest) returns (shadowvault.block.BlockResponse);
+  rpc AddPeer(shadowvault.peer.PeerAdd) returns (shadowvault.common.Ack);
+  rpc RemovePeer(shadowvault.peer.PeerRemove) returns (shadowvault.common.Ack);
+  rpc ListPeers(google.protobuf.Empty) returns (shadowvault.peer.PeerList);
+}

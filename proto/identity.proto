@@ -1,0 +1,10 @@
+syntax = "proto3";
+package shadowvault.identity;
+
+option go_package = "github.com/hoangsonww/shadowvault/proto/identity;identity";
+
+// Representation of a peer identity for discovery or exchange.
+message Identity {
+  string peer_id = 1;
+  string pubkey_base64 = 2;
+}

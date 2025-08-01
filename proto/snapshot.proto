@@ -1,0 +1,32 @@
+syntax = "proto3";
+package shadowvault.snapshot;
+
+import "google/protobuf/timestamp.proto";
+
+option go_package = "github.com/hoangsonww/shadowvault/proto/snapshot;snapshot";
+
+// Represents a single file in a snapshot with its chunk hashes.
+message FileEntry {
+  string path = 1;
+  uint32 mode = 2;
+  google.protobuf.Timestamp mod_time = 3;
+  uint64 size = 4;
+  repeated string chunk_hashes = 5; // hex or base64 of encrypted chunks
+}
+
+// The canonical snapshot metadata, signed by the creator.
+message SnapshotMetadata {
+  string id = 1;
+  string parent = 2; // parent snapshot ID, empty if none
+  google.protobuf.Timestamp timestamp = 3;
+  string root = 4; // root path that was snapshotted
+  repeated FileEntry files = 5;
+
+  string signer_pub = 6; // base64 / raw public key of signer (Ed25519)
+  string signature = 7; // base64 signature over canonical snapshot (excluding this field)
+}
+
+// Announcement of a new snapshot to the network.
+message SnapshotAnnouncement {
+  SnapshotMetadata snapshot = 1;
+}

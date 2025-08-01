@@ -1,0 +1,16 @@
+syntax = "proto3";
+package shadowvault.auth;
+
+option go_package = "github.com/hoangsonww/shadowvault/proto/auth;auth";
+
+// Access control list: list of admin public keys (base64 / raw).
+message ACL {
+  repeated string admins = 1;
+}
+
+// Generic signed payload structure if needed for extension.
+message SignedMessage {
+  bytes payload = 1;
+  bytes signature = 2;
+  bytes pub_key = 3;
+}

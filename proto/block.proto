@@ -1,0 +1,26 @@
+syntax = "proto3";
+package shadowvault.block;
+
+option go_package = "github.com/hoangsonww/shadowvault/proto/block;block";
+
+// Announcement that a peer holds a block.
+message BlockAnnounce {
+  string hash = 1; // chunk hash (hex)
+  string peer_id = 2; // libp2p peer ID
+}
+
+// Request for a block (chunk), signed by requester.
+message BlockRequest {
+  string hash = 1;
+  string requestor_peer_id = 2;
+  bytes signature = 3; // signature over hash + "|" + requestor_peer_id
+  bytes signer_pub = 4; // public key of requestor
+}
+
+// Response with the block data (encrypted chunk), signed by responder.
+message BlockResponse {
+  string hash = 1;
+  bytes data = 2; // encrypted chunk bytes
+  bytes signer_pub = 3; // public key of responder
+  bytes signature = 4; // signature over hash + "|" + base64(data)
+}
