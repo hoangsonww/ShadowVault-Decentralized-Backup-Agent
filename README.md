@@ -3,6 +3,7 @@
 <p>
 <!-- Core implementation -->
 <img alt="Go" src="https://img.shields.io/badge/Go-language-cyan?style=for-the-badge&logo=go&logoColor=white" />
+<img alt="protobuf" src="https://img.shields.io/badge/Protobuf-serialization-blue?style=for-the-badge&logo=protobuf&logoColor=white" />
 <img alt="libp2p" src="https://img.shields.io/badge/libp2p-p2p-yellow?style=for-the-badge&logo=libp2p&logoColor=white" />
 <img alt="AES-256-GCM" src="https://img.shields.io/badge/AES--256--GCM-encryption-green?style=for-the-badge" />
 <img alt="Content Addressed Storage" src="https://img.shields.io/badge/CAS-content--addressed_teal?style=for-the-badge&logo=database&logoColor=white" />
@@ -12,6 +13,9 @@
 <img alt="Docker" src="https://img.shields.io/badge/Docker-container-blue?style=for-the-badge&logo=docker&logoColor=white" />
 <img alt="Docker Compose" src="https://img.shields.io/badge/Docker_Compose-orchestration-236adb?style=for-the-badge&logo=docker&logoColor=white" />
 <img alt="C" src="https://img.shields.io/badge/C-utility-lightgrey?style=for-the-badge&logo=c&logoColor=white" />
+<img alt="makefile" src="https://img.shields.io/badge/makefile-build-orange?style=for-the-badge&logo=make&logoColor=white" />
+<img alt="Testing" src="https://img.shields.io/badge/Testing-unit%20tests-blueviolet?style=for-the-badge&logo=testing&logoColor=white" />
+<img alt="Shell Scripting" src="https://img.shields.io/badge/Shell_Scripting-helpers-yellow?style=for-the-badge&logo=shell&logoColor=white" />
 <img alt="MIT License" src="https://img.shields.io/badge/License-MIT-blue?style=for-the-badge&logo=opensource&logoColor=white" />
 </p>
 
@@ -38,12 +42,15 @@
 16. [Utility C Tool](#utility-c-tool)  
 17. [Shell Helpers & Entry Point](#shell-helpers--entry-point)  
 18. [Example File Layout After Run](#example-file-layout-after-run)  
-19. [Troubleshooting & Common Issues](#troubleshooting--common-issues)  
-20. [Security Considerations](#security-considerations)  
-21. [Extension Points / Developer Notes](#extension-points--developer-notes)  
-22. [Contributing](#contributing)  
-23. [Glossary](#glossary)  
-24. [License](#license)
+19. [Troubleshooting & Common Issues](#troubleshooting--common-issues)
+20. [Protocol Buffers](#protocol-buffers)  
+    - [Generating Go bindings](#generating-go-bindings)  
+    - [File-by-file summary](#file-by-file-summary)  
+21. [Security Considerations](#security-considerations)
+22. [Extension Points / Developer Notes](#extension-points--developer-notes)  
+23. [Contributing](#contributing)  
+24. [Glossary](#glossary)  
+25. [License](#license)
 
 ## Overview
 
@@ -377,6 +384,71 @@ chmod +x entrypoint.sh scripts/*.sh
 | Identity changes unexpectedly   | Identity key deleted or corrupted       | Restore `identity.key` backup; avoid deleting it               |
 | Peer not discovered             | DHT/bootstrap misconfig                 | Ensure bootstrap addresses are correct and reachable           |
 | Cache inconsistency on restore  | Corrupted local chunk                   | Delete affected chunk and allow re-fetch from another peer     |
+
+## Protocol Buffers
+
+ShadowVault defines its on-wire and on-disk message formats in Protobuf, organized under `proto/`:
+
+```
+
+proto/
+common.proto
+snapshot.proto
+block.proto
+peer.proto
+auth.proto
+identity.proto
+service.proto
+
+````
+
+### Generating Go bindings
+
+Install the Protobuf plugins for Go:
+
+```bash
+go install google.golang.org/protobuf/cmd/protoc-gen-go@latest
+go install google.golang.org/grpc/cmd/protoc-gen-go-grpc@latest
+````
+
+Then from the project root run:
+
+```bash
+protoc --go_out=. --go-grpc_out=. proto/*.proto
+```
+
+This will generate Go packages under `github.com/yourusername/shadowvault/proto/...`.
+
+### File-by-file summary
+
+* **`common.proto`**
+
+   * `Ack` – simple acknowledgment wrapper (`ok` + `message`).
+* **`snapshot.proto`**
+
+   * `FileEntry` – path, metadata and list of chunk hashes.
+   * `SnapshotMetadata` – signed snapshot descriptor (ID, parent, timestamp, files, signer, signature).
+   * `SnapshotAnnouncement` – wraps the above for gossip/pubsub.
+* **`block.proto`**
+
+   * `BlockAnnounce` – tell peers “I have chunk `<hash>`”.
+   * `BlockRequest` – signed request for a chunk.
+   * `BlockResponse` – signed response carrying the encrypted payload.
+* **`peer.proto`**
+
+   * `PeerInfo` – `peer_id` + multiaddrs.
+   * `PeerAdd` / `PeerRemove` – signed introductions or removals.
+   * `PeerList` – enumeration of known peers.
+* **`auth.proto`**
+
+   * `ACL` – list of admin public keys.
+   * `SignedMessage` – generic wrapper (payload + signature + pubkey).
+* **`identity.proto`**
+
+   * `Identity` – peer identity record (`peer_id` + `pubkey_base64`).
+* **`service.proto`**
+
+   * `ShadowVault` gRPC service – RPCs for snapshot announce, block request/response, peer add/remove, list peers.
 
 ## Security Considerations
 
