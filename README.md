@@ -91,6 +91,74 @@
 - **Anti-entropy**: Peers reconcile missing pieces by observing announcements and querying.  
 - **ACLs**: Optional admin lists controlling who can introduce peers or snapshots.
 
+```mermaid
+sequenceDiagram
+    participant User
+    participant Daemon as "ShadowVault Daemon"
+    participant Identity as "Identity Store (Ed25519 keys / ACL)"
+    participant Chunker
+    participant Dedup as "Deduplicator"
+    participant Encryptor as "AES-256-GCM Encryptor"
+    participant LocalCAS as "Local CAS (encrypted blobs)"
+    participant MetaDB as "Metadata DB (bbolt)"
+    participant PubSub as "PubSub / Gossip"
+    participant Peer as "Remote Peer"
+    participant Restore as "Restore Agent"
+    participant Decryptor as "Decryptor"
+    participant Reconstructor as "File Reconstructor"
+
+    %% Snapshot creation
+    User->>Daemon: request snapshot of directory
+    Daemon->>Identity: load persistent identity & ACL
+    Daemon->>Chunker: chunk files (content-defined)
+    Chunker->>Dedup: send chunk hashes
+    Dedup->>LocalCAS: check existing encrypted chunks
+    alt chunk missing locally
+        Dedup->>Encryptor: encrypt chunk with derived key
+        Encryptor->>LocalCAS: store encrypted chunk (SHA-256 address)
+    else chunk already present
+        Dedup-->>LocalCAS: reuse existing blob
+    end
+    Daemon->>MetaDB: assemble snapshot metadata (chunk list, parent, timestamps)
+    Daemon->>Identity: sign snapshot metadata with Ed25519
+    Daemon->>MetaDB: persist signed snapshot descriptor
+    Daemon->>PubSub: publish SnapshotAnnouncement
+    Daemon->>PubSub: publish BlockAnnounce for available chunk hashes
+
+    %% Peer synchronization
+    PubSub->>Peer: receive SnapshotAnnouncement + BlockAnnounces
+    Peer->>Identity: verify snapshot signature against ACL/public key
+    alt signature valid and allowed
+        Peer->>LocalCAS: check which announced chunks are missing
+        alt has missing chunks
+            Peer->>Peer: open direct libp2p stream to known holder\nrequest specific chunk
+            Peer->>LocalCAS: if requested, send encrypted chunk
+            Peer-->>Peer: receive encrypted chunk
+            Peer->>LocalCAS: store received encrypted chunk
+        end
+        Peer->>MetaDB: update block availability index / peer cache
+    else invalid announcement
+        Peer-->>PubSub: ignore / log rejection
+    end
+
+    %% Restore workflow
+    User->>Restore: request restore of snapshot ID
+    Restore->>MetaDB: fetch snapshot metadata
+    Restore->>Identity: verify snapshot signature
+    Restore->>LocalCAS: for each chunk in snapshot, check local presence
+    alt chunk present
+        LocalCAS-->>Restore: provide encrypted chunk
+    else chunk missing
+        Restore->>PubSub: query gossip for holders
+        Restore->>Peer: direct fetch chunk via libp2p stream
+        Peer-->>Restore: send encrypted chunk
+        Restore->>LocalCAS: cache fetched encrypted chunk
+    end
+    Restore->>Decryptor: decrypt chunk(s) using derived key
+    Decryptor->>Reconstructor: supply plaintext pieces
+    Reconstructor->>User: reassemble original files with metadata
+```
+
 ## Quickstart
 
 ```sh
