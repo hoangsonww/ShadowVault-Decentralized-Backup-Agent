@@ -1,0 +1,26 @@
+repos:
+  - repo: local
+    hooks:
+      - id: go-fmt
+        name: go fmt
+        entry: go fmt ./...
+        language: system
+        types: [go]
+
+      - id: goimports
+        name: goimports
+        entry: goimports -w .
+        language: system
+        types: [go]
+
+      - id: golangci-lint
+        name: golangci-lint
+        entry: golangci-lint run
+        language: system
+        types: [go]
+
+      - id: clang-format
+        name: clang-format C/headers
+        entry: bash -c "find . -name '*.c' -o -name '*.h' | xargs clang-format -i"
+        language: system
+        files: \.(c|h)$

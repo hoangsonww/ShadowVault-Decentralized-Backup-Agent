@@ -1,0 +1,14 @@
+repository_path: "./data"
+listen_port: 9000
+peer_bootstrap:
+  - "/ip4/127.0.0.1/tcp/9001/p2p/QmSomePeerID"
+nat_traversal:
+  enable_auto_relay: true
+  enable_hole_punching: true
+snapshot:
+  min_chunk_size: 2048
+  max_chunk_size: 65536
+  avg_chunk_size: 8192
+acl:
+  admins:
+    - "peerPubKeyBase64..."  # Ed25519 public keys allowed to manage peers

@@ -1,0 +1,27 @@
+version: '3.9'
+services:
+  node1:
+    build: .
+    container_name: backupagent_node1
+    volumes:
+      - ./data/node1:/data
+      - ./config.yaml:/app/config.yaml:ro
+    environment:
+      - PASSPHRASE=yourpassphrase
+    command: ["daemon", "-c", "/app/config.yaml", "-p", "${PASSPHRASE}"]
+    ports:
+      - "9000:9000"
+
+  node2:
+    build: .
+    container_name: backupagent_node2
+    depends_on:
+      - node1
+    volumes:
+      - ./data/node2:/data
+      - ./config.yaml:/app/config.yaml:ro
+    environment:
+      - PASSPHRASE=yourpassphrase
+    command: ["daemon", "-c", "/app/config.yaml", "-p", "${PASSPHRASE}"]
+    ports:
+      - "9001:9000"
