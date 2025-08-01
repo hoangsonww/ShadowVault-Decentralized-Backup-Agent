@@ -8,7 +8,7 @@
 <img alt="AES-256-GCM" src="https://img.shields.io/badge/AES--256--GCM-encryption-green?style=for-the-badge" />
 <img alt="Content Addressed Storage" src="https://img.shields.io/badge/CAS-content--addressed_teal?style=for-the-badge&logo=database&logoColor=white" />
 <img alt="Ed25519" src="https://img.shields.io/badge/Ed25519-signature-purple?style=for-the-badge" />
-<img alt="Bbolt" src="https://img.shields.io/badge/Bbolt-keyvalue-db-blue?style=for-the-badge" />
+<img alt="Bbolt" src="https://img.shields.io/badge/Bbolt-embedded%20DB-orange?style=for-the-badge&logo=bolt&logoColor=white" />
 <img alt="CLI" src="https://img.shields.io/badge/CLI-tooling-darkblue?style=for-the-badge&logo=console&logoColor=white" />
 <img alt="Docker" src="https://img.shields.io/badge/Docker-container-blue?style=for-the-badge&logo=docker&logoColor=white" />
 <img alt="Docker Compose" src="https://img.shields.io/badge/Docker_Compose-orchestration-236adb?style=for-the-badge&logo=docker&logoColor=white" />
