@@ -13,6 +13,8 @@
 <img alt="Docker" src="https://img.shields.io/badge/Docker-container-blue?style=for-the-badge&logo=docker&logoColor=white" />
 <img alt="Docker Compose" src="https://img.shields.io/badge/Docker_Compose-orchestration-236adb?style=for-the-badge&logo=docker&logoColor=white" />
 <img alt="C" src="https://img.shields.io/badge/C-utility-lightgrey?style=for-the-badge&logo=c&logoColor=white" />
+<img alt="C++" src="https://img.shields.io/badge/C-utility-green?style=for-the-badge&logo=cplusplus&logoColor=white" />
+<img alt="Rust" src="https://img.shields.io/badge/Rust-utility-pink?style=for-the-badge&logo=rust&logoColor=white" />
 <img alt="makefile" src="https://img.shields.io/badge/makefile-build-orange?style=for-the-badge&logo=make&logoColor=white" />
 <img alt="Testing" src="https://img.shields.io/badge/Testing-unit%20tests-blueviolet?style=for-the-badge&logo=testing&logoColor=white" />
 <img alt="Shell Scripting" src="https://img.shields.io/badge/Shell_Scripting-helpers-yellow?style=for-the-badge&logo=shell&logoColor=white" />
