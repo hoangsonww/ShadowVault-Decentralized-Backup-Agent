@@ -1,14 +1,17 @@
 package snapshots
 
 import (
+	"encoding/base64"
+	"encoding/json"
+	"fmt"
 	"io"
 	"os"
 	"path/filepath"
+	"time"
 
 	"github.com/hoangsonww/backupagent/internal/chunker"
-	"github.com/hoangsonww/backupagent/internal/storage"
-	"github.com/hoangsonww/backupagent/internal/versioning"
 	"github.com/hoangsonww/backupagent/internal/crypto"
+	"github.com/hoangsonww/backupagent/internal/storage"
 	"github.com/hoangsonww/backupagent/internal/versioning"
 )
 
@@ -51,12 +54,12 @@ func CreateSnapshot(path string, store *storage.Store, signerPub, signerPriv []b
 	}
 
 	snap := &versioning.Snapshot{
-		ID:        versioning.GenerateSnapshotID(), // implement deterministic or random
+		ID:        fmt.Sprintf("snap-%d", time.Now().Unix()),
 		Parent:    parent,
-		Timestamp: time.Now().UTC(),
+		Timestamp: time.Now().UTC().Format(time.RFC3339),
 		Chunks:    chunkHashes,
 		Meta:      map[string]string{"source": path},
-		SignerPub: crypto.EncodeKey(signerPub),
+		SignerPub: base64.StdEncoding.EncodeToString(signerPub),
 	}
 	// Sign it
 	raw, _ := json.Marshal(snapWithoutSignature(snap))

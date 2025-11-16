@@ -46,7 +46,7 @@ func (sa *SnapshotAnnouncement) Validate() error {
 // ChunkRequest asks for a block by hash. Signed by requester.
 type ChunkRequest struct {
 	Hash      string `json:"hash"`
-	Requestor string `json:"requestor"` // peer ID
+	Requestor string `json:"requestor"`  // peer ID
 	SignerPub string `json:"signer_pub"` // base64 ed25519 pubkey
 	Signature string `json:"signature"`  // base64 signature over Hash+Requestor
 }
@@ -71,7 +71,7 @@ func (cr *ChunkRequest) Validate() error {
 // ChunkResponse carries the requested block. Signed by responder.
 type ChunkResponse struct {
 	Hash      string `json:"hash"`
-	Data      string `json:"data"`      // base64 encrypted chunk
+	Data      string `json:"data"`       // base64 encrypted chunk
 	SignerPub string `json:"signer_pub"` // base64 ed25519 pubkey
 	Signature string `json:"signature"`  // base64 signature over Hash+Data
 }
