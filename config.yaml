@@ -2,13 +2,64 @@ repository_path: "./data"
 listen_port: 9000
 peer_bootstrap:
   - "/ip4/127.0.0.1/tcp/9001/p2p/QmSomePeerID"
+
 nat_traversal:
   enable_auto_relay: true
   enable_hole_punching: true
+
 snapshot:
   min_chunk_size: 2048
   max_chunk_size: 65536
   avg_chunk_size: 8192
+  compression: false  # Enable zstd compression for backups
+
 acl:
   admins:
     - "peerPubKeyBase64..."  # Ed25519 public keys allowed to manage peers
+
+# P2P networking configuration
+p2p:
+  max_peers: 50
+  connection_timeout: 30s
+  discovery_interval: 5m
+  heartbeat_interval: 30s
+  max_concurrent_fetch: 10
+  chunk_fetch_timeout: 60s
+  reconnect_backoff: 5s
+  max_reconnect_backoff: 5m
+
+# Storage and retention policies
+storage:
+  max_cache_size: 1073741824  # 1GB in bytes
+  gc_interval: 24h
+  retention_days: 30
+  verify_on_restore: true
+  enable_deduplication: true
+
+# Monitoring and observability
+monitoring:
+  enable_metrics: true
+  metrics_port: 9090
+  enable_profiling: false
+  profiling_port: 6060
+  health_check_port: 8080
+  log_level: info  # debug, info, warn, error, fatal
+  log_format: json  # json or text
+  enable_tracing: false
+  tracing_endpoint: ""
+
+# Automated backup scheduling
+scheduler:
+  enable_auto_backup: false
+  backup_interval: 24h
+  backup_paths: []
+  max_backup_retries: 3
+
+# Security and rate limiting
+security:
+  enable_rate_limiting: true
+  requests_per_second: 100
+  burst_size: 200
+  enable_ip_whitelist: false
+  whitelisted_ips: []
+  max_request_size: 104857600  # 100MB in bytes
