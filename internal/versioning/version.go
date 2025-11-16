@@ -3,20 +3,19 @@ package versioning
 import (
 	"encoding/json"
 	"errors"
-	"time"
 
 	"github.com/hoangsonww/backupagent/internal/persistence"
 	bolt "go.etcd.io/bbolt"
 )
 
 type Snapshot struct {
-	ID         string            `json:"id"`
-	Parent     string            `json:"parent,omitempty"`
-	Timestamp  string            `json:"timestamp"` // RFC3339 format
-	Chunks     []string          `json:"chunks"`    // hashes
-	Meta       map[string]string `json:"meta"`
-	SignerPub  string            `json:"signer_pub"` // for authenticity
-	Signature  string            `json:"signature"`
+	ID        string            `json:"id"`
+	Parent    string            `json:"parent,omitempty"`
+	Timestamp string            `json:"timestamp"` // RFC3339 format
+	Chunks    []string          `json:"chunks"`    // hashes
+	Meta      map[string]string `json:"meta"`
+	SignerPub string            `json:"signer_pub"` // for authenticity
+	Signature string            `json:"signature"`
 }
 
 func SaveSnapshot(db *persistence.DB, snap *Snapshot) error {

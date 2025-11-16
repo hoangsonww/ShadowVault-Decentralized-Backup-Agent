@@ -14,14 +14,14 @@ import (
 
 // VerificationResult contains the results of a backup verification
 type VerificationResult struct {
-	SnapshotID       string
-	TotalChunks      int
-	VerifiedChunks   int
-	MissingChunks    []string
-	CorruptedChunks  []string
-	SignatureValid   bool
-	Errors           []error
-	Success          bool
+	SnapshotID      string
+	TotalChunks     int
+	VerifiedChunks  int
+	MissingChunks   []string
+	CorruptedChunks []string
+	SignatureValid  bool
+	Errors          []error
+	Success         bool
 }
 
 // Verifier handles backup verification and integrity checking
@@ -96,12 +96,12 @@ func (v *Verifier) VerifySnapshot(snapshotID string) (*VerificationResult, error
 		len(result.CorruptedChunks) == 0
 
 	logger.WithFields(map[string]interface{}{
-		"total_chunks":      result.TotalChunks,
-		"verified_chunks":   result.VerifiedChunks,
-		"missing_chunks":    len(result.MissingChunks),
-		"corrupted_chunks":  len(result.CorruptedChunks),
-		"signature_valid":   result.SignatureValid,
-		"success":           result.Success,
+		"total_chunks":     result.TotalChunks,
+		"verified_chunks":  result.VerifiedChunks,
+		"missing_chunks":   len(result.MissingChunks),
+		"corrupted_chunks": len(result.CorruptedChunks),
+		"signature_valid":  result.SignatureValid,
+		"success":          result.Success,
 	}).Info("Snapshot verification completed")
 
 	return result, nil
@@ -252,12 +252,12 @@ func (v *Verifier) GetVerificationReport() (map[string]interface{}, error) {
 	}
 
 	return map[string]interface{}{
-		"total_snapshots":    totalSnapshots,
-		"valid_snapshots":    validSnapshots,
-		"invalid_snapshots":  totalSnapshots - validSnapshots,
-		"total_chunks":       totalChunks,
-		"missing_chunks":     missingChunks,
-		"corrupted_chunks":   corruptedChunks,
-		"health_percentage":  float64(validSnapshots) / float64(totalSnapshots) * 100,
+		"total_snapshots":   totalSnapshots,
+		"valid_snapshots":   validSnapshots,
+		"invalid_snapshots": totalSnapshots - validSnapshots,
+		"total_chunks":      totalChunks,
+		"missing_chunks":    missingChunks,
+		"corrupted_chunks":  corruptedChunks,
+		"health_percentage": float64(validSnapshots) / float64(totalSnapshots) * 100,
 	}, nil
 }

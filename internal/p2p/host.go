@@ -9,7 +9,6 @@ import (
 	"github.com/hoangsonww/backupagent/internal/monitoring"
 	"github.com/hoangsonww/backupagent/internal/storage"
 	libp2p "github.com/libp2p/go-libp2p"
-	autonat "github.com/libp2p/go-libp2p-autonat"
 	dht "github.com/libp2p/go-libp2p-kad-dht"
 	pubsub "github.com/libp2p/go-libp2p-pubsub"
 	"github.com/libp2p/go-libp2p/core/crypto"
@@ -66,7 +65,8 @@ func Setup(cfg *config.Config, privKey crypto.PrivKey, store *storage.Store, sig
 	}
 
 	// AutoNAT service to help with NAT awareness
-	_, _ = autonat.New(h)
+	// Commented out due to dependency conflicts - can be re-enabled when libp2p-autonat is updated
+	// _, _ = autonat.New(h)
 
 	// Bootstrap to provided peers
 	for _, addr := range cfg.PeerBootstrap {
@@ -106,7 +106,7 @@ func Setup(cfg *config.Config, privKey crypto.PrivKey, store *storage.Store, sig
 	// Rendezvous
 	routingDiscovery := discovery.NewRoutingDiscovery(kadDHT)
 	go func() {
-		discovery.Advertise(ctx, routingDiscovery, "backupagent")
+		routingDiscovery.Advertise(ctx, "backupagent")
 	}()
 
 	// discover peers in background

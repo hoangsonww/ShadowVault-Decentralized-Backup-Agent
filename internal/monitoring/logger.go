@@ -49,11 +49,11 @@ type LogEntry struct {
 
 // Logger provides structured logging capabilities
 type Logger struct {
-	mu          sync.Mutex
-	level       LogLevel
-	format      string // "json" or "text"
-	output      io.Writer
-	fields      map[string]interface{}
+	mu     sync.Mutex
+	level  LogLevel
+	format string // "json" or "text"
+	output io.Writer
+	fields map[string]interface{}
 }
 
 // NewLogger creates a new Logger instance

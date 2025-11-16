@@ -10,22 +10,22 @@ type ErrorCode string
 
 const (
 	// Storage errors
-	ErrCodeStorageFull       ErrorCode = "STORAGE_FULL"
-	ErrCodeStorageCorrupted  ErrorCode = "STORAGE_CORRUPTED"
-	ErrCodeChunkNotFound     ErrorCode = "CHUNK_NOT_FOUND"
-	ErrCodeChunkInvalid      ErrorCode = "CHUNK_INVALID"
+	ErrCodeStorageFull      ErrorCode = "STORAGE_FULL"
+	ErrCodeStorageCorrupted ErrorCode = "STORAGE_CORRUPTED"
+	ErrCodeChunkNotFound    ErrorCode = "CHUNK_NOT_FOUND"
+	ErrCodeChunkInvalid     ErrorCode = "CHUNK_INVALID"
 
 	// Network errors
-	ErrCodeNetworkTimeout    ErrorCode = "NETWORK_TIMEOUT"
+	ErrCodeNetworkTimeout     ErrorCode = "NETWORK_TIMEOUT"
 	ErrCodeNetworkUnreachable ErrorCode = "NETWORK_UNREACHABLE"
-	ErrCodePeerNotFound      ErrorCode = "PEER_NOT_FOUND"
-	ErrCodeConnectionFailed  ErrorCode = "CONNECTION_FAILED"
+	ErrCodePeerNotFound       ErrorCode = "PEER_NOT_FOUND"
+	ErrCodeConnectionFailed   ErrorCode = "CONNECTION_FAILED"
 
 	// Crypto errors
-	ErrCodeEncryptionFailed  ErrorCode = "ENCRYPTION_FAILED"
-	ErrCodeDecryptionFailed  ErrorCode = "DECRYPTION_FAILED"
-	ErrCodeInvalidSignature  ErrorCode = "INVALID_SIGNATURE"
-	ErrCodeInvalidKey        ErrorCode = "INVALID_KEY"
+	ErrCodeEncryptionFailed ErrorCode = "ENCRYPTION_FAILED"
+	ErrCodeDecryptionFailed ErrorCode = "DECRYPTION_FAILED"
+	ErrCodeInvalidSignature ErrorCode = "INVALID_SIGNATURE"
+	ErrCodeInvalidKey       ErrorCode = "INVALID_KEY"
 
 	// Snapshot errors
 	ErrCodeSnapshotNotFound  ErrorCode = "SNAPSHOT_NOT_FOUND"
@@ -33,12 +33,12 @@ const (
 	ErrCodeSnapshotInvalid   ErrorCode = "SNAPSHOT_INVALID"
 
 	// Configuration errors
-	ErrCodeConfigInvalid     ErrorCode = "CONFIG_INVALID"
-	ErrCodeConfigMissing     ErrorCode = "CONFIG_MISSING"
+	ErrCodeConfigInvalid ErrorCode = "CONFIG_INVALID"
+	ErrCodeConfigMissing ErrorCode = "CONFIG_MISSING"
 
 	// Permission errors
-	ErrCodePermissionDenied  ErrorCode = "PERMISSION_DENIED"
-	ErrCodeUnauthorized      ErrorCode = "UNAUTHORIZED"
+	ErrCodePermissionDenied ErrorCode = "PERMISSION_DENIED"
+	ErrCodeUnauthorized     ErrorCode = "UNAUTHORIZED"
 
 	// Resource errors
 	ErrCodeResourceExhausted ErrorCode = "RESOURCE_EXHAUSTED"
@@ -79,9 +79,9 @@ func (e *ShadowVaultError) Is(target error) bool {
 // NewError creates a new ShadowVault error
 func NewError(code ErrorCode, message string) *ShadowVaultError {
 	return &ShadowVaultError{
-		Code:      code,
-		Message:   message,
-		Retryable: isRetryable(code),
+		Code:       code,
+		Message:    message,
+		Retryable:  isRetryable(code),
 		StatusCode: getStatusCode(code),
 	}
 }
@@ -89,10 +89,10 @@ func NewError(code ErrorCode, message string) *ShadowVaultError {
 // WrapError wraps an existing error
 func WrapError(code ErrorCode, message string, err error) *ShadowVaultError {
 	return &ShadowVaultError{
-		Code:      code,
-		Message:   message,
-		Err:       err,
-		Retryable: isRetryable(code),
+		Code:       code,
+		Message:    message,
+		Err:        err,
+		Retryable:  isRetryable(code),
 		StatusCode: getStatusCode(code),
 	}
 }

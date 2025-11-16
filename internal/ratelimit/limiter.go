@@ -13,12 +13,12 @@ import (
 
 // Limiter manages rate limiting for different resources
 type Limiter struct {
-	mu            sync.RWMutex
-	limiters      map[string]*rate.Limiter
+	mu             sync.RWMutex
+	limiters       map[string]*rate.Limiter
 	requestsPerSec int
-	burst         int
-	ipWhitelist   map[string]bool
-	enabled       bool
+	burst          int
+	ipWhitelist    map[string]bool
+	enabled        bool
 }
 
 // NewLimiter creates a new rate limiter
@@ -29,11 +29,11 @@ func NewLimiter(requestsPerSec, burst int, whitelist []string, enabled bool) *Li
 	}
 
 	return &Limiter{
-		limiters:      make(map[string]*rate.Limiter),
+		limiters:       make(map[string]*rate.Limiter),
 		requestsPerSec: requestsPerSec,
-		burst:         burst,
-		ipWhitelist:   ipMap,
-		enabled:       enabled,
+		burst:          burst,
+		ipWhitelist:    ipMap,
+		enabled:        enabled,
 	}
 }
 
@@ -284,10 +284,10 @@ func (r *ResourceLimiter) GetStats() map[string]interface{} {
 	defer r.mu.RUnlock()
 
 	return map[string]interface{}{
-		"memory_used_mb":    r.currentMemory / (1024 * 1024),
-		"memory_limit_mb":   r.maxMemoryBytes / (1024 * 1024),
-		"goroutines":        r.goroutineCount,
-		"goroutine_limit":   r.maxGoroutines,
-		"memory_usage_pct":  float64(r.currentMemory) / float64(r.maxMemoryBytes) * 100,
+		"memory_used_mb":   r.currentMemory / (1024 * 1024),
+		"memory_limit_mb":  r.maxMemoryBytes / (1024 * 1024),
+		"goroutines":       r.goroutineCount,
+		"goroutine_limit":  r.maxGoroutines,
+		"memory_usage_pct": float64(r.currentMemory) / float64(r.maxMemoryBytes) * 100,
 	}
 }

@@ -251,7 +251,7 @@ func (s *Server) handleGCStatus(w http.ResponseWriter, r *http.Request) {
 	}
 
 	respondJSON(w, http.StatusOK, map[string]interface{}{
-		"gc_runs": s.metrics.GarbageCollectionRuns.Load(),
+		"gc_runs":        s.metrics.GarbageCollectionRuns.Load(),
 		"blocks_deleted": s.metrics.BlocksDeleted.Load(),
 	})
 }
@@ -277,14 +277,14 @@ func (s *Server) handleMetricsSummary(w http.ResponseWriter, r *http.Request) {
 			"bytes_restored":  s.metrics.BytesRestored.Load(),
 		},
 		"storage": map[string]interface{}{
-			"total_used":    s.metrics.TotalStorageUsed.Load(),
-			"blocks_stored": s.metrics.BlocksStored.Load(),
+			"total_used":     s.metrics.TotalStorageUsed.Load(),
+			"blocks_stored":  s.metrics.BlocksStored.Load(),
 			"blocks_deleted": s.metrics.BlocksDeleted.Load(),
 		},
 		"p2p": map[string]interface{}{
-			"peers_connected":  s.metrics.PeersConnected.Load(),
-			"peers_discovered": s.metrics.PeersDiscovered.Load(),
-			"messages_sent":    s.metrics.MessagesSent.Load(),
+			"peers_connected":   s.metrics.PeersConnected.Load(),
+			"peers_discovered":  s.metrics.PeersDiscovered.Load(),
+			"messages_sent":     s.metrics.MessagesSent.Load(),
 			"messages_received": s.metrics.MessagesReceived.Load(),
 		},
 		"errors": map[string]interface{}{
@@ -308,9 +308,9 @@ func (s *Server) handleStatus(w http.ResponseWriter, r *http.Request) {
 	health := s.healthChecker.GetHealth()
 
 	respondJSON(w, http.StatusOK, map[string]interface{}{
-		"health":   health,
-		"p2p_id":   s.agent.P2P.Host.ID().String(),
-		"peers":    len(s.agent.P2P.Host.Network().Peers()),
+		"health": health,
+		"p2p_id": s.agent.P2P.Host.ID().String(),
+		"peers":  len(s.agent.P2P.Host.Network().Peers()),
 	})
 }
 

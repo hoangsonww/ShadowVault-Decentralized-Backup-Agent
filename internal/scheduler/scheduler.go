@@ -11,26 +11,26 @@ import (
 
 // BackupTask represents a scheduled backup task
 type BackupTask struct {
-	ID          string
-	Path        string
-	Interval    time.Duration
-	LastRun     time.Time
-	NextRun     time.Time
-	Enabled     bool
-	MaxRetries  int
-	RetryCount  int
+	ID         string
+	Path       string
+	Interval   time.Duration
+	LastRun    time.Time
+	NextRun    time.Time
+	Enabled    bool
+	MaxRetries int
+	RetryCount int
 }
 
 // Scheduler manages automated backup scheduling
 type Scheduler struct {
-	mu              sync.RWMutex
-	tasks           map[string]*BackupTask
-	backupFunc      func(string) error
-	ctx             context.Context
-	cancel          context.CancelFunc
-	running         bool
-	metrics         *monitoring.Metrics
-	logger          *monitoring.Logger
+	mu         sync.RWMutex
+	tasks      map[string]*BackupTask
+	backupFunc func(string) error
+	ctx        context.Context
+	cancel     context.CancelFunc
+	running    bool
+	metrics    *monitoring.Metrics
+	logger     *monitoring.Logger
 }
 
 // NewScheduler creates a new backup scheduler

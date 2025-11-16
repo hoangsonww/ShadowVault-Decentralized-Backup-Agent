@@ -10,11 +10,11 @@ import (
 
 // MetricsServer serves metrics and health endpoints
 type MetricsServer struct {
-	metricsServer    *http.Server
-	healthServer     *http.Server
-	profilingServer  *http.Server
-	metrics          *Metrics
-	healthChecker    *HealthChecker
+	metricsServer   *http.Server
+	healthServer    *http.Server
+	profilingServer *http.Server
+	metrics         *Metrics
+	healthChecker   *HealthChecker
 }
 
 // NewMetricsServer creates a new metrics server

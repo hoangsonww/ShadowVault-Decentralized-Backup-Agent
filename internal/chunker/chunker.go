@@ -10,9 +10,9 @@ import (
 // Breaks when lower bits of rolling hash hit a pattern to get average size.
 
 type Chunker struct {
-	r      io.Reader
+	r             io.Reader
 	min, max, avg int
-	window []byte
+	window        []byte
 }
 
 const (

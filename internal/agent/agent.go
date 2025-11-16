@@ -2,7 +2,6 @@ package agent
 
 import (
 	"context"
-	"encoding/base64"
 	"encoding/json"
 	"fmt"
 	"os"
@@ -18,19 +17,19 @@ import (
 	"github.com/hoangsonww/backupagent/internal/p2p"
 	"github.com/hoangsonww/backupagent/internal/persistence"
 	"github.com/hoangsonww/backupagent/internal/protocol"
+	"github.com/hoangsonww/backupagent/internal/snapshots"
 	"github.com/hoangsonww/backupagent/internal/storage"
 	"github.com/hoangsonww/backupagent/internal/versioning"
-	"github.com/hoangsonww/backupagent/snapshots"
 	pubsub "github.com/libp2p/go-libp2p-pubsub"
 )
 
 type Agent struct {
-	Config    *config.Config
-	DB        *persistence.DB
-	Store     *storage.Store
-	P2P       *p2p.P2PHost
-	ACL       *auth.ACL
-	SignerPub []byte
+	Config     *config.Config
+	DB         *persistence.DB
+	Store      *storage.Store
+	P2P        *p2p.P2PHost
+	ACL        *auth.ACL
+	SignerPub  []byte
 	SignerPriv []byte
 }
 
@@ -63,12 +62,12 @@ func New(cfg *config.Config, passphrase string) (*Agent, error) {
 	}
 
 	agent := &Agent{
-		Config:    cfg,
-		DB:        db,
-		Store:     store,
-		P2P:       p2phost,
-		ACL:       acl,
-		SignerPub: pub,
+		Config:     cfg,
+		DB:         db,
+		Store:      store,
+		P2P:        p2phost,
+		ACL:        acl,
+		SignerPub:  pub,
 		SignerPriv: priv,
 	}
 	return agent, nil
@@ -225,8 +224,7 @@ func (a *Agent) handlePeerAdd(envelope map[string]interface{}) {
 	}
 
 	// Check ACL
-	pubKey, err := base64.StdEncoding.DecodeString(peerAdd.SignerPub)
-	if err != nil || !a.ACL.IsAdmin(pubKey) {
+	if !a.ACL.IsAdmin(peerAdd.SignerPub) {
 		logger.Warn("Peer add from non-admin, ignoring")
 		return
 	}
@@ -257,8 +255,7 @@ func (a *Agent) handlePeerRemove(envelope map[string]interface{}) {
 	}
 
 	// Check ACL
-	pubKey, err := base64.StdEncoding.DecodeString(peerRemove.SignerPub)
-	if err != nil || !a.ACL.IsAdmin(pubKey) {
+	if !a.ACL.IsAdmin(peerRemove.SignerPub) {
 		logger.Warn("Peer remove from non-admin, ignoring")
 		return
 	}

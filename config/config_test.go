@@ -191,7 +191,7 @@ listen_port: 9000
 			name: "invalid port - too low",
 			config: `
 repository_path: "./data"
-listen_port: 0
+listen_port: -1
 `,
 			expectError: true,
 			errorMsg:    "listen_port must be 1-65535",

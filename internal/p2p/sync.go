@@ -3,6 +3,7 @@ package p2p
 import (
 	"context"
 	"encoding/base64"
+	"encoding/hex"
 	"encoding/json"
 	"errors"
 	"fmt"
@@ -15,7 +16,6 @@ import (
 	"github.com/hoangsonww/backupagent/internal/storage"
 	"github.com/hoangsonww/backupagent/internal/versioning"
 	pubsub "github.com/libp2p/go-libp2p-pubsub"
-	"github.com/libp2p/go-libp2p/core/peer"
 )
 
 // ChunkFetcher handles fetching missing chunks from peers
@@ -125,7 +125,7 @@ func (cf *ChunkFetcher) HandleChunkResponse(resp *protocol.ChunkResponse) error 
 	}
 
 	// Verify chunk hash
-	actualHash := crypto.Hash(data)
+	actualHash := hex.EncodeToString(crypto.Hash(data))
 	if actualHash != resp.Hash {
 		logger.Errorf("Chunk hash mismatch: expected %s, got %s", resp.Hash, actualHash)
 		return errors.New("chunk hash mismatch")

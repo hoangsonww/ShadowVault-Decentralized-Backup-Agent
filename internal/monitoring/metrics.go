@@ -9,41 +9,41 @@ import (
 // Metrics holds all application metrics
 type Metrics struct {
 	// Backup metrics
-	BackupsCreated       atomic.Uint64
-	BackupsFailed        atomic.Uint64
-	RestoresCompleted    atomic.Uint64
-	RestoresFailed       atomic.Uint64
-	BytesBackedUp        atomic.Uint64
-	BytesRestored        atomic.Uint64
-	ChunksStored         atomic.Uint64
-	ChunksFetched        atomic.Uint64
-	DeduplicatedChunks   atomic.Uint64
+	BackupsCreated     atomic.Uint64
+	BackupsFailed      atomic.Uint64
+	RestoresCompleted  atomic.Uint64
+	RestoresFailed     atomic.Uint64
+	BytesBackedUp      atomic.Uint64
+	BytesRestored      atomic.Uint64
+	ChunksStored       atomic.Uint64
+	ChunksFetched      atomic.Uint64
+	DeduplicatedChunks atomic.Uint64
 
 	// P2P metrics
-	PeersConnected       atomic.Int64
-	PeersDiscovered      atomic.Uint64
-	MessagesReceived     atomic.Uint64
-	MessagesSent         atomic.Uint64
+	PeersConnected        atomic.Int64
+	PeersDiscovered       atomic.Uint64
+	MessagesReceived      atomic.Uint64
+	MessagesSent          atomic.Uint64
 	ChunkRequestsReceived atomic.Uint64
-	ChunkRequestsSent    atomic.Uint64
-	ChunkRequestsFailed  atomic.Uint64
+	ChunkRequestsSent     atomic.Uint64
+	ChunkRequestsFailed   atomic.Uint64
 
 	// Storage metrics
-	TotalStorageUsed     atomic.Int64
-	BlocksStored         atomic.Uint64
-	BlocksDeleted        atomic.Uint64
+	TotalStorageUsed      atomic.Int64
+	BlocksStored          atomic.Uint64
+	BlocksDeleted         atomic.Uint64
 	GarbageCollectionRuns atomic.Uint64
 
 	// Performance metrics
-	BackupDuration       *DurationHistogram
-	RestoreDuration      *DurationHistogram
-	ChunkFetchDuration   *DurationHistogram
+	BackupDuration     *DurationHistogram
+	RestoreDuration    *DurationHistogram
+	ChunkFetchDuration *DurationHistogram
 
 	// Error metrics
-	TotalErrors          atomic.Uint64
-	NetworkErrors        atomic.Uint64
-	StorageErrors        atomic.Uint64
-	CryptoErrors         atomic.Uint64
+	TotalErrors   atomic.Uint64
+	NetworkErrors atomic.Uint64
+	StorageErrors atomic.Uint64
+	CryptoErrors  atomic.Uint64
 }
 
 // DurationHistogram tracks duration distributions

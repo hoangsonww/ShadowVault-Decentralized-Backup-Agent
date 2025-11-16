@@ -1,13 +1,13 @@
 package storage
 
 import (
-	"bytes"
 	"encoding/hex"
 	"errors"
 	"sync"
 
 	"github.com/hoangsonww/backupagent/internal/crypto"
 	"github.com/hoangsonww/backupagent/internal/persistence"
+	bolt "go.etcd.io/bbolt"
 )
 
 type Store struct {
@@ -33,7 +33,7 @@ func (s *Store) PutChunk(plaintext []byte) (string, error) {
 
 	s.mu.Lock()
 	defer s.mu.Unlock()
-	err := s.db.Update(func(tx *boltTx) error {
+	err := s.db.Update(func(tx *bolt.Tx) error {
 		b := tx.Bucket([]byte(persistence.BucketBlocks))
 		if b.Get([]byte(hashStr)) != nil {
 			// Already exists (dedup)
@@ -56,7 +56,7 @@ func (s *Store) PutChunk(plaintext []byte) (string, error) {
 // GetChunk returns decrypted chunk by hash string
 func (s *Store) GetChunk(hashStr string) ([]byte, error) {
 	var stored []byte
-	err := s.db.View(func(tx *boltTx) error {
+	err := s.db.View(func(tx *bolt.Tx) error {
 		b := tx.Bucket([]byte(persistence.BucketBlocks))
 		v := b.Get([]byte(hashStr))
 		if v == nil {
@@ -80,7 +80,7 @@ func (s *Store) GetChunk(hashStr string) ([]byte, error) {
 // Get retrieves encrypted chunk data by hash (for P2P transfer)
 func (s *Store) Get(hashStr string) ([]byte, error) {
 	var stored []byte
-	err := s.db.View(func(tx *boltTx) error {
+	err := s.db.View(func(tx *bolt.Tx) error {
 		b := tx.Bucket([]byte(persistence.BucketBlocks))
 		v := b.Get([]byte(hashStr))
 		if v == nil {
@@ -96,7 +96,7 @@ func (s *Store) Get(hashStr string) ([]byte, error) {
 func (s *Store) Put(hashStr string, data []byte) error {
 	s.mu.Lock()
 	defer s.mu.Unlock()
-	return s.db.Update(func(tx *boltTx) error {
+	return s.db.Update(func(tx *bolt.Tx) error {
 		b := tx.Bucket([]byte(persistence.BucketBlocks))
 		return b.Put([]byte(hashStr), data)
 	})
@@ -106,7 +106,7 @@ func (s *Store) Put(hashStr string, data []byte) error {
 func (s *Store) Delete(hashStr string) error {
 	s.mu.Lock()
 	defer s.mu.Unlock()
-	return s.db.Update(func(tx *boltTx) error {
+	return s.db.Update(func(tx *bolt.Tx) error {
 		b := tx.Bucket([]byte(persistence.BucketBlocks))
 		return b.Delete([]byte(hashStr))
 	})
@@ -115,7 +115,7 @@ func (s *Store) Delete(hashStr string) error {
 // ListAll returns all chunk hashes in storage
 func (s *Store) ListAll() ([]string, error) {
 	var hashes []string
-	err := s.db.View(func(tx *boltTx) error {
+	err := s.db.View(func(tx *bolt.Tx) error {
 		b := tx.Bucket([]byte(persistence.BucketBlocks))
 		return b.ForEach(func(k, v []byte) error {
 			hashes = append(hashes, string(k))
@@ -127,7 +127,7 @@ func (s *Store) ListAll() ([]string, error) {
 
 // Exists checks if a chunk exists in storage
 func (s *Store) Exists(hashStr string) bool {
-	err := s.db.View(func(tx *boltTx) error {
+	err := s.db.View(func(tx *bolt.Tx) error {
 		b := tx.Bucket([]byte(persistence.BucketBlocks))
 		if b.Get([]byte(hashStr)) == nil {
 			return errors.New("not found")

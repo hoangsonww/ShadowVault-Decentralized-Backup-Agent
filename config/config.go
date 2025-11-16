@@ -38,23 +38,23 @@ type P2PConfig struct {
 }
 
 type StorageConfig struct {
-	MaxCacheSize       int64         `yaml:"max_cache_size"`
-	GCInterval         time.Duration `yaml:"gc_interval"`
-	RetentionDays      int           `yaml:"retention_days"`
-	VerifyOnRestore    bool          `yaml:"verify_on_restore"`
-	EnableDeduplication bool         `yaml:"enable_deduplication"`
+	MaxCacheSize        int64         `yaml:"max_cache_size"`
+	GCInterval          time.Duration `yaml:"gc_interval"`
+	RetentionDays       int           `yaml:"retention_days"`
+	VerifyOnRestore     bool          `yaml:"verify_on_restore"`
+	EnableDeduplication bool          `yaml:"enable_deduplication"`
 }
 
 type MonitoringConfig struct {
-	EnableMetrics     bool   `yaml:"enable_metrics"`
-	MetricsPort       int    `yaml:"metrics_port"`
-	EnableProfiling   bool   `yaml:"enable_profiling"`
-	ProfilingPort     int    `yaml:"profiling_port"`
-	HealthCheckPort   int    `yaml:"health_check_port"`
-	LogLevel          string `yaml:"log_level"`
-	LogFormat         string `yaml:"log_format"` // "json" or "text"
-	EnableTracing     bool   `yaml:"enable_tracing"`
-	TracingEndpoint   string `yaml:"tracing_endpoint"`
+	EnableMetrics   bool   `yaml:"enable_metrics"`
+	MetricsPort     int    `yaml:"metrics_port"`
+	EnableProfiling bool   `yaml:"enable_profiling"`
+	ProfilingPort   int    `yaml:"profiling_port"`
+	HealthCheckPort int    `yaml:"health_check_port"`
+	LogLevel        string `yaml:"log_level"`
+	LogFormat       string `yaml:"log_format"` // "json" or "text"
+	EnableTracing   bool   `yaml:"enable_tracing"`
+	TracingEndpoint string `yaml:"tracing_endpoint"`
 }
 
 type SchedulerConfig struct {
@@ -65,12 +65,12 @@ type SchedulerConfig struct {
 }
 
 type SecurityConfig struct {
-	EnableRateLimiting bool   `yaml:"enable_rate_limiting"`
-	RequestsPerSecond  int    `yaml:"requests_per_second"`
-	BurstSize          int    `yaml:"burst_size"`
-	EnableIPWhitelist  bool   `yaml:"enable_ip_whitelist"`
+	EnableRateLimiting bool     `yaml:"enable_rate_limiting"`
+	RequestsPerSecond  int      `yaml:"requests_per_second"`
+	BurstSize          int      `yaml:"burst_size"`
+	EnableIPWhitelist  bool     `yaml:"enable_ip_whitelist"`
 	WhitelistedIPs     []string `yaml:"whitelisted_ips"`
-	MaxRequestSize     int64  `yaml:"max_request_size"`
+	MaxRequestSize     int64    `yaml:"max_request_size"`
 }
 
 type Config struct {
@@ -253,7 +253,7 @@ func (c *Config) Validate() error {
 			c.Snapshot.MaxChunkSize, c.Snapshot.MinChunkSize)
 	}
 	if c.Snapshot.AvgChunkSize < c.Snapshot.MinChunkSize ||
-	   c.Snapshot.AvgChunkSize > c.Snapshot.MaxChunkSize {
+		c.Snapshot.AvgChunkSize > c.Snapshot.MaxChunkSize {
 		return fmt.Errorf("avg_chunk_size (%d) must be between min (%d) and max (%d)",
 			c.Snapshot.AvgChunkSize, c.Snapshot.MinChunkSize, c.Snapshot.MaxChunkSize)
 	}

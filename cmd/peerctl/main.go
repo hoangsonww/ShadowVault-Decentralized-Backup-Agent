@@ -10,14 +10,14 @@ import (
 	"github.com/spf13/cobra"
 	"go.etcd.io/bbolt"
 
-	"github.com/libp2p/go-libp2p/core/peer"
 	"github.com/hoangsonww/backupagent/config"
 	"github.com/hoangsonww/backupagent/internal/agent"
 	"github.com/hoangsonww/backupagent/internal/persistence"
+	"github.com/libp2p/go-libp2p/core/peer"
 )
 
 var (
-	cfgFile   string
+	cfgFile    string
 	passphrase string
 )
 

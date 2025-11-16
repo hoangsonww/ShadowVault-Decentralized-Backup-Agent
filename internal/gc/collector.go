@@ -13,13 +13,13 @@ import (
 
 // Collector handles garbage collection of old snapshots and unreferenced chunks
 type Collector struct {
-	db              *persistence.DB
-	store           *storage.Store
-	retentionDays   int
-	gcInterval      time.Duration
-	metrics         *monitoring.Metrics
-	ctx             context.Context
-	cancel          context.CancelFunc
+	db            *persistence.DB
+	store         *storage.Store
+	retentionDays int
+	gcInterval    time.Duration
+	metrics       *monitoring.Metrics
+	ctx           context.Context
+	cancel        context.CancelFunc
 }
 
 // NewCollector creates a new garbage collector
