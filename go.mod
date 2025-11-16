@@ -11,5 +11,6 @@ require (
 	github.com/spf13/cobra v1.6.1
 	go.etcd.io/bbolt v1.3.6
 	golang.org/x/crypto v0.8.0
+	golang.org/x/time v0.5.0
 	gopkg.in/yaml.v3 v3.0.1
 )
