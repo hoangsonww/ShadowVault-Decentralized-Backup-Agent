@@ -1,0 +1,1207 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="description" content="ShadowVault - Privacy-preserving, decentralized encrypted backup agent built with Go, libp2p, and AES-256-GCM encryption">
+    <meta name="keywords" content="backup, encryption, p2p, decentralized, privacy, AES-256, libp2p, go, blockchain">
+    <meta name="author" content="Son Nguyen">
+    <title>ShadowVault - Decentralized Encrypted Backup Agent</title>
+    
+    <!-- Favicon -->
+    <link rel="icon" href="data:image/svg+xml,<svg xmlns=%22http://www.w3.org/2000/svg%22 viewBox=%220 0 100 100%22><text y=%22.9em%22 font-size=%2290%22>🔐</text></svg>">
+    
+    <!-- Fonts -->
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800&family=Fira+Code:wght@400;500;600&display=swap" rel="stylesheet">
+    
+    <!-- Styles -->
+    <link rel="stylesheet" href="packages/styles.css">
+    
+    <!-- Mermaid for diagrams -->
+    <script src="https://cdn.jsdelivr.net/npm/mermaid@10/dist/mermaid.min.js"></script>
+</head>
+<body>
+    <!-- Progress Bar -->
+    <div class="progress-container">
+        <div class="progress-bar" id="progressBar"></div>
+    </div>
+
+    <!-- Header -->
+    <header>
+        <div class="container">
+            <div class="header-content">
+                <a href="#" class="logo">
+                    <span class="logo-icon">🔐</span>
+                    <span>ShadowVault</span>
+                </a>
+                
+                <!-- Hamburger Menu Button -->
+                <button class="hamburger" id="hamburger" aria-label="Toggle menu">
+                    <span></span>
+                    <span></span>
+                    <span></span>
+                </button>
+                
+                <nav>
+                    <ul class="nav-menu" id="navMenu">
+                        <li><a href="#overview">Overview</a></li>
+                        <li><a href="#tech-stack">Tech</a></li>
+                        <li><a href="#architecture">Architecture</a></li>
+                        <li><a href="#quickstart">Start</a></li>
+                        <li><a href="#security">Security</a></li>
+                        <li><a href="#documentation">Docs</a></li>
+                        <li><a href="#contributing">Contribute</a></li>
+                    </ul>
+                </nav>
+            </div>
+            
+            <!-- Mobile Menu Overlay -->
+            <div class="nav-overlay" id="navOverlay"></div>
+        </div>
+    </header>
+
+    <!-- Hero Section -->
+    <section class="hero">
+        <div class="container">
+            <div class="hero-content">
+                <h1>🔐 ShadowVault</h1>
+                <p class="hero-subtitle">
+                    Privacy-Preserving, Decentralized Encrypted Backup Agent
+                </p>
+                <div class="badges">
+                    <span class="badge">🔒 AES-256-GCM</span>
+                    <span class="badge">🌐 P2P libp2p</span>
+                    <span class="badge">🗄️ Content-Addressed Storage</span>
+                    <span class="badge">✍️ Ed25519 Signatures</span>
+                    <span class="badge">🐹 Built with Go</span>
+                    <span class="badge">🐳 Docker Ready</span>
+                    <span class="badge">⚡ Zero Trust</span>
+                    <span class="badge">📦 Deduplication</span>
+                </div>
+                <div class="cta-buttons">
+                    <a href="#quickstart" class="btn btn-primary">
+                        <span>🚀 Get Started</span>
+                    </a>
+                    <a href="#documentation" class="btn btn-secondary">
+                        <span>📚 Read Docs</span>
+                    </a>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Overview Section -->
+    <section id="overview">
+        <div class="container">
+            <h2 class="section-title">Project Overview</h2>
+            <p class="section-subtitle">
+                A privacy-first, decentralized backup solution with military-grade encryption
+            </p>
+            
+            <div class="features-grid">
+                <div class="feature-card">
+                    <div class="feature-icon">🔐</div>
+                    <h3 class="feature-title">Client-Side Encryption</h3>
+                    <p class="feature-description">
+                        All data is encrypted locally using AES-256-GCM before storage or transmission. 
+                        Your passphrase never leaves your machine, and peers can't read your data without it.
+                    </p>
+                </div>
+                
+                <div class="feature-card">
+                    <div class="feature-icon">🌐</div>
+                    <h3 class="feature-title">Truly Decentralized</h3>
+                    <p class="feature-description">
+                        Built on libp2p for peer-to-peer communication. No central servers, no single point of failure. 
+                        Peers gossip and sync directly via PubSub and direct streams.
+                    </p>
+                </div>
+                
+                <div class="feature-card">
+                    <div class="feature-icon">📦</div>
+                    <h3 class="feature-title">Smart Deduplication</h3>
+                    <p class="feature-description">
+                        Content-addressed storage with SHA-256 hashing ensures only unique chunks are stored. 
+                        Saves bandwidth and storage across all snapshots.
+                    </p>
+                </div>
+                
+                <div class="feature-card">
+                    <div class="feature-icon">✍️</div>
+                    <h3 class="feature-title">Cryptographic Signatures</h3>
+                    <p class="feature-description">
+                        Every snapshot is signed with Ed25519 keys. Verify authenticity and prevent tampering 
+                        with cryptographic proof of origin.
+                    </p>
+                </div>
+                
+                <div class="feature-card">
+                    <div class="feature-icon">🔄</div>
+                    <h3 class="feature-title">Automatic Synchronization</h3>
+                    <p class="feature-description">
+                        Peers automatically discover and fetch missing chunks through gossip protocols. 
+                        Multi-source downloads improve resilience and speed.
+                    </p>
+                </div>
+                
+                <div class="feature-card">
+                    <div class="feature-icon">⚡</div>
+                    <h3 class="feature-title">NAT Traversal</h3>
+                    <p class="feature-description">
+                        Built-in support for auto-relay and hole punching. Works behind NATs and firewalls 
+                        without manual port forwarding.
+                    </p>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Technology Stack -->
+    <section id="tech-stack">
+        <div class="container">
+            <h2 class="section-title">Technology Stack</h2>
+            <p class="section-subtitle">Built with cutting-edge technologies for maximum security and performance</p>
+            
+            <div class="tech-stack">
+                <div class="tech-item">
+                    <span class="tech-icon">🐹</span>
+                    <div class="tech-name">Go 1.21+</div>
+                    <div class="tech-description">Core implementation language</div>
+                </div>
+                
+                <div class="tech-item">
+                    <span class="tech-icon">🌐</span>
+                    <div class="tech-name">libp2p</div>
+                    <div class="tech-description">P2P networking & discovery</div>
+                </div>
+                
+                <div class="tech-item">
+                    <span class="tech-icon">🗄️</span>
+                    <div class="tech-name">bbolt</div>
+                    <div class="tech-description">Embedded key-value DB</div>
+                </div>
+                
+                <div class="tech-item">
+                    <span class="tech-icon">🔒</span>
+                    <div class="tech-name">AES-256-GCM</div>
+                    <div class="tech-description">Authenticated encryption</div>
+                </div>
+                
+                <div class="tech-item">
+                    <span class="tech-icon">✍️</span>
+                    <div class="tech-name">Ed25519</div>
+                    <div class="tech-description">Digital signatures</div>
+                </div>
+                
+                <div class="tech-item">
+                    <span class="tech-icon">📡</span>
+                    <div class="tech-name">Protocol Buffers</div>
+                    <div class="tech-description">Efficient serialization</div>
+                </div>
+                
+                <div class="tech-item">
+                    <span class="tech-icon">🐳</span>
+                    <div class="tech-name">Docker</div>
+                    <div class="tech-description">Containerization</div>
+                </div>
+                
+                <div class="tech-item">
+                    <span class="tech-icon">⚙️</span>
+                    <div class="tech-name">Make</div>
+                    <div class="tech-description">Build automation</div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Architecture Section -->
+    <section id="architecture">
+        <div class="container">
+            <h2 class="section-title">System Architecture</h2>
+            <p class="section-subtitle">Comprehensive workflow from snapshot creation to peer synchronization and restoration</p>
+            
+            <div class="diagram-container">
+                <div class="mermaid">
+sequenceDiagram
+    participant User
+    participant Daemon as ShadowVault Daemon
+    participant Identity as Identity Store<br/>(Ed25519/ACL)
+    participant Chunker
+    participant Dedup as Deduplicator
+    participant Encryptor as AES-256-GCM
+    participant LocalCAS as Local CAS<br/>(Encrypted Blobs)
+    participant MetaDB as Metadata DB<br/>(bbolt)
+    participant PubSub as PubSub/Gossip
+    participant Peer as Remote Peer
+
+    Note over User,Peer: SNAPSHOT CREATION PHASE
+    User->>Daemon: snapshot /path/to/dir
+    Daemon->>Identity: Load identity & ACL
+    Daemon->>Chunker: Chunk files (CDC)
+    Chunker->>Dedup: Check chunk hashes
+    Dedup->>LocalCAS: Query existing chunks
+    alt Chunk Missing
+        Dedup->>Encryptor: Encrypt with derived key
+        Encryptor->>LocalCAS: Store encrypted chunk
+    else Chunk Exists
+        Dedup-->>LocalCAS: Reuse existing
+    end
+    Daemon->>MetaDB: Assemble snapshot metadata
+    Daemon->>Identity: Sign with Ed25519
+    Daemon->>MetaDB: Persist signed snapshot
+    Daemon->>PubSub: Publish SnapshotAnnouncement
+    Daemon->>PubSub: Publish BlockAnnounces
+
+    Note over User,Peer: PEER SYNC PHASE
+    PubSub->>Peer: Receive announcements
+    Peer->>Identity: Verify signature & ACL
+    alt Valid Signature
+        Peer->>LocalCAS: Check missing chunks
+        alt Has Missing Chunks
+            Peer->>Daemon: Request via libp2p stream
+            Daemon->>Peer: Send encrypted chunk
+            Peer->>LocalCAS: Store chunk
+        end
+        Peer->>MetaDB: Update indices
+    else Invalid
+        Peer-->>PubSub: Reject & log
+    end
+
+    Note over User,Peer: RESTORE PHASE
+    User->>Daemon: restore snapshot-id
+    Daemon->>MetaDB: Fetch snapshot
+    Daemon->>Identity: Verify signature
+    loop For each chunk
+        alt Chunk Local
+            LocalCAS-->>Daemon: Return chunk
+        else Chunk Remote
+            Daemon->>Peer: Fetch via stream
+            Peer-->>Daemon: Send chunk
+        end
+        Daemon->>Encryptor: Decrypt chunk
+    end
+    Daemon->>User: Reconstruct files
+                </div>
+            </div>
+            
+            <div class="alert alert-info">
+                <strong>💡 Key Insight:</strong> The architecture ensures zero-trust operation. All sensitive data 
+                is encrypted before leaving the local machine, and cryptographic signatures guarantee authenticity 
+                at every step.
+            </div>
+        </div>
+    </section>
+
+    <!-- Quick Start Section -->
+    <section id="quickstart">
+        <div class="container">
+            <h2 class="section-title">Quick Start Guide</h2>
+            <p class="section-subtitle">Get up and running in minutes</p>
+            
+            <div class="cli-section">
+                <div class="command-group">
+                    <h3 class="command-title">📥 Installation & Build</h3>
+                    
+                    <div class="code-block">
+                        <div class="code-header">
+                            <span class="code-lang">bash</span>
+                            <button class="copy-btn" onclick="copyCode(this)">Copy</button>
+                        </div>
+                        <pre><code># Clone the repository
+git clone https://github.com/hoangsonww/ShadowVault-Go-Encryptor.git
+cd ShadowVault-Go-Encryptor
+
+# Build all binaries
+make build
+
+# Run tests
+make test</code></pre>
+                    </div>
+                    
+                    <p class="command-desc">
+                        This creates three binaries: <code>backup-agent</code>, <code>restore-agent</code>, and <code>peerctl</code>.
+                    </p>
+                </div>
+
+                <div class="command-group">
+                    <h3 class="command-title">🚀 Initial Setup</h3>
+                    
+                    <div class="code-block">
+                        <div class="code-header">
+                            <span class="code-lang">bash</span>
+                            <button class="copy-btn" onclick="copyCode(this)">Copy</button>
+                        </div>
+                        <pre><code># Use the entry point script (builds + configures + starts daemon)
+./entrypoint.sh config.yaml /path/to/backup
+
+# Or manually start the daemon
+./bin/backup-agent daemon -c config.yaml -p "your-secure-passphrase"</code></pre>
+                    </div>
+                </div>
+
+                <div class="command-group">
+                    <h3 class="command-title">📸 Creating Snapshots</h3>
+                    
+                    <div class="code-block">
+                        <div class="code-header">
+                            <span class="code-lang">bash</span>
+                            <button class="copy-btn" onclick="copyCode(this)">Copy</button>
+                        </div>
+                        <pre><code># Take a snapshot of a directory
+./bin/backup-agent snapshot /path/to/important/data -c config.yaml -p "passphrase"
+
+# Using the helper script
+./scripts/snapshot.sh /path/to/important/data</code></pre>
+                    </div>
+                </div>
+
+                <div class="command-group">
+                    <h3 class="command-title">👥 Managing Peers</h3>
+                    
+                    <div class="code-block">
+                        <div class="code-header">
+                            <span class="code-lang">bash</span>
+                            <button class="copy-btn" onclick="copyCode(this)">Copy</button>
+                        </div>
+                        <pre><code># List known peers
+./bin/peerctl list -c config.yaml -p "passphrase"
+
+# Add a peer by multiaddr
+./bin/peerctl add /ip4/192.168.1.100/tcp/9000/p2p/QmPeerID -c config.yaml -p "passphrase"
+
+# Remove a peer
+./bin/peerctl remove QmPeerID -c config.yaml -p "passphrase"</code></pre>
+                    </div>
+                </div>
+
+                <div class="command-group">
+                    <h3 class="command-title">♻️ Restoring Data</h3>
+                    
+                    <div class="code-block">
+                        <div class="code-header">
+                            <span class="code-lang">bash</span>
+                            <button class="copy-btn" onclick="copyCode(this)">Copy</button>
+                        </div>
+                        <pre><code># Restore a snapshot by ID
+./bin/restore-agent restore &lt;snapshot-id&gt; /path/to/restore -c config.yaml -p "passphrase"
+
+# Using the helper script
+./scripts/restore.sh &lt;snapshot-id&gt; /path/to/restore</code></pre>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Docker Section -->
+    <section id="docker">
+        <div class="container">
+            <h2 class="section-title">🐳 Docker Deployment</h2>
+            <p class="section-subtitle">Run ShadowVault in containers for easy deployment and scaling</p>
+            
+            <div class="features-grid">
+                <div class="feature-card">
+                    <div class="feature-icon">🏗️</div>
+                    <h3 class="feature-title">Build Image</h3>
+                    <div class="code-block">
+                        <div class="code-header">
+                            <span class="code-lang">bash</span>
+                            <button class="copy-btn" onclick="copyCode(this)">Copy</button>
+                        </div>
+                        <pre><code># Build the Docker image
+docker build -t shadowvault:latest .
+
+# Or use make
+make docker</code></pre>
+                    </div>
+                </div>
+
+                <div class="feature-card">
+                    <div class="feature-icon">▶️</div>
+                    <h3 class="feature-title">Run Container</h3>
+                    <div class="code-block">
+                        <div class="code-header">
+                            <span class="code-lang">bash</span>
+                            <button class="copy-btn" onclick="copyCode(this)">Copy</button>
+                        </div>
+                        <pre><code># Run daemon in container
+docker run --rm \
+  -v "$(pwd)/data":/data \
+  -v "$(pwd)/config.yaml":/app/config.yaml:ro \
+  -e PASSPHRASE=yourpass \
+  shadowvault:latest</code></pre>
+                    </div>
+                </div>
+
+                <div class="feature-card">
+                    <div class="feature-icon">🔗</div>
+                    <h3 class="feature-title">Multi-Node Setup</h3>
+                    <div class="code-block">
+                        <div class="code-header">
+                            <span class="code-lang">bash</span>
+                            <button class="copy-btn" onclick="copyCode(this)">Copy</button>
+                        </div>
+                        <pre><code># Start multiple nodes with compose
+docker compose up
+
+# Scale to N nodes
+docker compose up --scale node1=3</code></pre>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Configuration Section -->
+    <section id="configuration">
+        <div class="container">
+            <h2 class="section-title">⚙️ Configuration</h2>
+            <p class="section-subtitle">Customize ShadowVault with config.yaml</p>
+            
+            <div class="code-block">
+                <div class="code-header">
+                    <span class="code-lang">yaml</span>
+                    <button class="copy-btn" onclick="copyCode(this)">Copy</button>
+                </div>
+                <pre><code>repository_path: "./data"
+listen_port: 9000
+
+# Bootstrap peers for initial connection
+peer_bootstrap:
+  - "/ip4/127.0.0.1/tcp/9001/p2p/QmSomePeerID"
+
+# NAT traversal settings
+nat_traversal:
+  enable_auto_relay: true
+  enable_hole_punching: true
+
+# Chunking configuration
+snapshot:
+  min_chunk_size: 2048
+  max_chunk_size: 65536
+  avg_chunk_size: 8192
+
+# Access control list
+acl:
+  admins:
+    - "base64-ed25519-pubkey-1"
+    - "base64-ed25519-pubkey-2"</code></pre>
+            </div>
+            
+            <div class="table-container">
+                <table>
+                    <thead>
+                        <tr>
+                            <th>Parameter</th>
+                            <th>Description</th>
+                            <th>Default</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        <tr>
+                            <td><code>repository_path</code></td>
+                            <td>Local storage path for snapshots and metadata</td>
+                            <td>./data</td>
+                        </tr>
+                        <tr>
+                            <td><code>listen_port</code></td>
+                            <td>Port for libp2p connections</td>
+                            <td>9000</td>
+                        </tr>
+                        <tr>
+                            <td><code>peer_bootstrap</code></td>
+                            <td>List of bootstrap peer multiaddrs</td>
+                            <td>[]</td>
+                        </tr>
+                        <tr>
+                            <td><code>enable_auto_relay</code></td>
+                            <td>Enable automatic relay for NAT traversal</td>
+                            <td>true</td>
+                        </tr>
+                        <tr>
+                            <td><code>enable_hole_punching</code></td>
+                            <td>Enable DCUtR hole punching</td>
+                            <td>true</td>
+                        </tr>
+                        <tr>
+                            <td><code>min_chunk_size</code></td>
+                            <td>Minimum chunk size in bytes</td>
+                            <td>2048</td>
+                        </tr>
+                        <tr>
+                            <td><code>max_chunk_size</code></td>
+                            <td>Maximum chunk size in bytes</td>
+                            <td>65536</td>
+                        </tr>
+                        <tr>
+                            <td><code>avg_chunk_size</code></td>
+                            <td>Target average chunk size</td>
+                            <td>8192</td>
+                        </tr>
+                    </tbody>
+                </table>
+            </div>
+        </div>
+    </section>
+
+    <!-- Security Section -->
+    <section id="security">
+        <div class="container">
+            <h2 class="section-title">🔒 Security Features</h2>
+            <p class="section-subtitle">Military-grade security with multiple layers of protection</p>
+            
+            <div class="features-grid">
+                <div class="feature-card">
+                    <div class="feature-icon">🔐</div>
+                    <h3 class="feature-title">AES-256-GCM Encryption</h3>
+                    <p class="feature-description">
+                        All data chunks are encrypted with AES-256 in Galois/Counter Mode, providing both 
+                        confidentiality and authenticated encryption. Keys are derived using Argon2id/scrypt 
+                        from your passphrase.
+                    </p>
+                </div>
+                
+                <div class="feature-card">
+                    <div class="feature-icon">✍️</div>
+                    <h3 class="feature-title">Ed25519 Digital Signatures</h3>
+                    <p class="feature-description">
+                        Every snapshot and protocol message is cryptographically signed using Ed25519, ensuring 
+                        authenticity and preventing tampering. Signatures are verified before acceptance.
+                    </p>
+                </div>
+                
+                <div class="feature-card">
+                    <div class="feature-icon">🔑</div>
+                    <h3 class="feature-title">Persistent Identity</h3>
+                    <p class="feature-description">
+                        Each peer has a stable libp2p identity based on a persistent private key. This enables 
+                        trust establishment and reputation tracking across sessions.
+                    </p>
+                </div>
+                
+                <div class="feature-card">
+                    <div class="feature-icon">🛡️</div>
+                    <h3 class="feature-title">Access Control Lists</h3>
+                    <p class="feature-description">
+                        ACLs govern which Ed25519 public keys are authorized to introduce peers, create snapshots, 
+                        or perform administrative operations, preventing unauthorized actions.
+                    </p>
+                </div>
+                
+                <div class="feature-card">
+                    <div class="feature-icon">🔍</div>
+                    <h3 class="feature-title">Content Verification</h3>
+                    <p class="feature-description">
+                        SHA-256 hashing ensures chunk integrity. Hash mismatches automatically trigger rejection 
+                        and re-fetch from alternate sources, protecting against corruption.
+                    </p>
+                </div>
+                
+                <div class="feature-card">
+                    <div class="feature-icon">🚫</div>
+                    <h3 class="feature-title">Zero-Knowledge Architecture</h3>
+                    <p class="feature-description">
+                        Peers can't decrypt your data without the passphrase. The network operates on encrypted 
+                        blobs, maintaining privacy even with malicious participants.
+                    </p>
+                </div>
+            </div>
+            
+            <div class="alert alert-warning">
+                <strong>⚠️ Security Best Practices:</strong>
+                <ul class="content-list">
+                    <li>Use high-entropy passphrases (20+ characters with mixed case, numbers, symbols)</li>
+                    <li>Protect identity.key file with strict permissions (chmod 600)</li>
+                    <li>Regularly backup your identity key separately</li>
+                    <li>Verify snapshot signatures before restoration</li>
+                    <li>Use ACLs in production to limit peer introductions</li>
+                    <li>Keep your Go dependencies updated for security patches</li>
+                </ul>
+            </div>
+        </div>
+    </section>
+
+    <!-- Protocol Buffers Section -->
+    <section id="protobuf">
+        <div class="container">
+            <h2 class="section-title">📡 Protocol Buffers</h2>
+            <p class="section-subtitle">Efficient, type-safe serialization for all network communication</p>
+            
+            <div class="table-container">
+                <table>
+                    <thead>
+                        <tr>
+                            <th>File</th>
+                            <th>Purpose</th>
+                            <th>Key Messages</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        <tr>
+                            <td><code>common.proto</code></td>
+                            <td>Shared types and acknowledgments</td>
+                            <td>Ack</td>
+                        </tr>
+                        <tr>
+                            <td><code>snapshot.proto</code></td>
+                            <td>Snapshot metadata and file entries</td>
+                            <td>FileEntry, SnapshotMetadata, SnapshotAnnouncement</td>
+                        </tr>
+                        <tr>
+                            <td><code>block.proto</code></td>
+                            <td>Chunk transfer protocol</td>
+                            <td>BlockAnnounce, BlockRequest, BlockResponse</td>
+                        </tr>
+                        <tr>
+                            <td><code>peer.proto</code></td>
+                            <td>Peer management messages</td>
+                            <td>PeerInfo, PeerAdd, PeerRemove, PeerList</td>
+                        </tr>
+                        <tr>
+                            <td><code>auth.proto</code></td>
+                            <td>Authentication and authorization</td>
+                            <td>ACL, SignedMessage</td>
+                        </tr>
+                        <tr>
+                            <td><code>identity.proto</code></td>
+                            <td>Identity records</td>
+                            <td>Identity</td>
+                        </tr>
+                        <tr>
+                            <td><code>service.proto</code></td>
+                            <td>gRPC service definitions</td>
+                            <td>ShadowVault service RPCs</td>
+                        </tr>
+                    </tbody>
+                </table>
+            </div>
+            
+            <div class="code-block">
+                <div class="code-header">
+                    <span class="code-lang">bash</span>
+                    <button class="copy-btn" onclick="copyCode(this)">Copy</button>
+                </div>
+                <pre><code># Install protobuf compiler plugins
+go install google.golang.org/protobuf/cmd/protoc-gen-go@latest
+go install google.golang.org/grpc/cmd/protoc-gen-go-grpc@latest
+
+# Generate Go bindings from proto files
+protoc --go_out=. --go-grpc_out=. proto/*.proto</code></pre>
+            </div>
+        </div>
+    </section>
+
+    <!-- CLI Documentation -->
+    <section id="documentation">
+        <div class="container">
+            <h2 class="section-title">📚 CLI Documentation</h2>
+            <p class="section-subtitle">Complete reference for all command-line tools</p>
+            
+            <div class="cli-section">
+                <div class="command-group">
+                    <h3 class="command-title">🔧 backup-agent</h3>
+                    <p class="feature-description" style="margin-bottom: 1rem;">
+                        Main daemon and snapshot creation tool.
+                    </p>
+                    
+                    <div class="command-item">
+                        <code class="command-syntax">./bin/backup-agent daemon -c &lt;config&gt; -p &lt;passphrase&gt;</code>
+                        <p class="command-desc">Start the daemon for continuous operation and peer communication</p>
+                    </div>
+                    
+                    <div class="command-item">
+                        <code class="command-syntax">./bin/backup-agent snapshot &lt;path&gt; -c &lt;config&gt; -p &lt;passphrase&gt;</code>
+                        <p class="command-desc">Create a new snapshot of the specified directory</p>
+                    </div>
+                    
+                    <div class="command-item">
+                        <code class="command-syntax">./bin/backup-agent list -c &lt;config&gt; -p &lt;passphrase&gt;</code>
+                        <p class="command-desc">List all local snapshots with metadata</p>
+                    </div>
+                </div>
+
+                <div class="command-group">
+                    <h3 class="command-title">♻️ restore-agent</h3>
+                    <p class="feature-description" style="margin-bottom: 1rem;">
+                        Snapshot restoration and data recovery tool.
+                    </p>
+                    
+                    <div class="command-item">
+                        <code class="command-syntax">./bin/restore-agent restore &lt;snapshot-id&gt; &lt;target-dir&gt; -c &lt;config&gt; -p &lt;passphrase&gt;</code>
+                        <p class="command-desc">Restore a snapshot to the target directory</p>
+                    </div>
+                    
+                    <div class="command-item">
+                        <code class="command-syntax">./bin/restore-agent verify &lt;snapshot-id&gt; -c &lt;config&gt; -p &lt;passphrase&gt;</code>
+                        <p class="command-desc">Verify snapshot integrity without restoring</p>
+                    </div>
+                </div>
+
+                <div class="command-group">
+                    <h3 class="command-title">👥 peerctl</h3>
+                    <p class="feature-description" style="margin-bottom: 1rem;">
+                        Peer network management utility.
+                    </p>
+                    
+                    <div class="command-item">
+                        <code class="command-syntax">./bin/peerctl list -c &lt;config&gt; -p &lt;passphrase&gt;</code>
+                        <p class="command-desc">List all known peers with their connection status</p>
+                    </div>
+                    
+                    <div class="command-item">
+                        <code class="command-syntax">./bin/peerctl add &lt;multiaddr&gt; -c &lt;config&gt; -p &lt;passphrase&gt;</code>
+                        <p class="command-desc">Manually add a peer by multiaddr (e.g., /ip4/1.2.3.4/tcp/9000/p2p/QmPeerID)</p>
+                    </div>
+                    
+                    <div class="command-item">
+                        <code class="command-syntax">./bin/peerctl remove &lt;peer-id&gt; -c &lt;config&gt; -p &lt;passphrase&gt;</code>
+                        <p class="command-desc">Remove a peer from the stored peer list</p>
+                    </div>
+                    
+                    <div class="command-item">
+                        <code class="command-syntax">./bin/peerctl info &lt;peer-id&gt; -c &lt;config&gt; -p &lt;passphrase&gt;</code>
+                        <p class="command-desc">Get detailed information about a specific peer</p>
+                    </div>
+                </div>
+
+                <div class="command-group">
+                    <h3 class="command-title">🔧 Common Flags</h3>
+                    
+                    <div class="table-container">
+                        <table>
+                            <thead>
+                                <tr>
+                                    <th>Flag</th>
+                                    <th>Short</th>
+                                    <th>Description</th>
+                                    <th>Required</th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                <tr>
+                                    <td><code>--config</code></td>
+                                    <td><code>-c</code></td>
+                                    <td>Path to config.yaml file</td>
+                                    <td>Yes</td>
+                                </tr>
+                                <tr>
+                                    <td><code>--pass</code></td>
+                                    <td><code>-p</code></td>
+                                    <td>Encryption passphrase</td>
+                                    <td>Yes</td>
+                                </tr>
+                                <tr>
+                                    <td><code>--verbose</code></td>
+                                    <td><code>-v</code></td>
+                                    <td>Enable verbose logging</td>
+                                    <td>No</td>
+                                </tr>
+                                <tr>
+                                    <td><code>--help</code></td>
+                                    <td><code>-h</code></td>
+                                    <td>Show help message</td>
+                                    <td>No</td>
+                                </tr>
+                            </tbody>
+                        </table>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Testing Section -->
+    <section id="testing">
+        <div class="container">
+            <h2 class="section-title">🧪 Testing</h2>
+            <p class="section-subtitle">Comprehensive test suite for reliability and correctness</p>
+            
+            <div class="features-grid">
+                <div class="feature-card">
+                    <div class="feature-icon">✅</div>
+                    <h3 class="feature-title">Unit Tests</h3>
+                    <div class="code-block">
+                        <div class="code-header">
+                            <span class="code-lang">bash</span>
+                            <button class="copy-btn" onclick="copyCode(this)">Copy</button>
+                        </div>
+                        <pre><code># Run all tests
+make test
+
+# Run with coverage
+go test ./... -cover
+
+# Verbose output
+go test ./... -v</code></pre>
+                    </div>
+                </div>
+
+                <div class="feature-card">
+                    <div class="feature-icon">🔍</div>
+                    <h3 class="feature-title">Test Coverage</h3>
+                    <p class="feature-description">Critical modules tested:</p>
+                    <ul class="content-list">
+                        <li>Crypto: AES-256-GCM encryption/decryption</li>
+                        <li>Chunker: Content-defined boundaries</li>
+                        <li>Identity: Key generation and signatures</li>
+                        <li>Storage: CAS operations</li>
+                        <li>P2P: Message validation</li>
+                    </ul>
+                </div>
+
+                <div class="feature-card">
+                    <div class="feature-icon">📊</div>
+                    <h3 class="feature-title">Code Quality</h3>
+                    <div class="code-block">
+                        <div class="code-header">
+                            <span class="code-lang">bash</span>
+                            <button class="copy-btn" onclick="copyCode(this)">Copy</button>
+                        </div>
+                        <pre><code># Format code
+make fmt
+
+# Check formatting
+make check-fmt
+
+# Run linter (if configured)
+golangci-lint run</code></pre>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Troubleshooting Section -->
+    <section id="troubleshooting">
+        <div class="container">
+            <h2 class="section-title">🔧 Troubleshooting</h2>
+            <p class="section-subtitle">Common issues and their solutions</p>
+            
+            <div class="table-container">
+                <table>
+                    <thead>
+                        <tr>
+                            <th>Problem</th>
+                            <th>Likely Cause</th>
+                            <th>Solution</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        <tr>
+                            <td>Snapshot creation fails</td>
+                            <td>File permissions or missing files</td>
+                            <td>Check file access rights, run with appropriate privileges</td>
+                        </tr>
+                        <tr>
+                            <td>Cannot fetch chunk from peer</td>
+                            <td>Peer offline or no announcement</td>
+                            <td>Verify peer connection with <code>peerctl list</code>, check network</td>
+                        </tr>
+                        <tr>
+                            <td>Signature validation fails</td>
+                            <td>Wrong passphrase or tampered data</td>
+                            <td>Verify passphrase, reject corrupted snapshots</td>
+                        </tr>
+                        <tr>
+                            <td>Identity changes unexpectedly</td>
+                            <td>identity.key deleted or corrupted</td>
+                            <td>Restore from backup, avoid deleting identity.key</td>
+                        </tr>
+                        <tr>
+                            <td>Peer not discovered</td>
+                            <td>Bootstrap misconfig or network issue</td>
+                            <td>Check bootstrap addresses, verify firewall settings</td>
+                        </tr>
+                        <tr>
+                            <td>High memory usage</td>
+                            <td>Large files or many concurrent ops</td>
+                            <td>Adjust chunk sizes, limit concurrent snapshots</td>
+                        </tr>
+                        <tr>
+                            <td>Port already in use</td>
+                            <td>Another instance running</td>
+                            <td>Change listen_port in config or stop other instance</td>
+                        </tr>
+                        <tr>
+                            <td>Database corruption</td>
+                            <td>Unclean shutdown or disk error</td>
+                            <td>Restore metadata.db from backup, use fsck</td>
+                        </tr>
+                    </tbody>
+                </table>
+            </div>
+            
+            <div class="alert alert-info">
+                <strong>💡 Debug Tips:</strong>
+                <ul class="content-list">
+                    <li>Use <code>-v</code> flag for verbose logging</li>
+                    <li>Check logs in <code>repository_path/logs/</code></li>
+                    <li>Verify network connectivity with <code>ping</code> and <code>telnet</code></li>
+                    <li>Test locally first before adding remote peers</li>
+                    <li>Use <code>docker logs</code> for containerized deployments</li>
+                </ul>
+            </div>
+        </div>
+    </section>
+
+    <!-- Contributing Section -->
+    <section id="contributing">
+        <div class="container">
+            <h2 class="section-title">🤝 Contributing</h2>
+            <p class="section-subtitle">Help make ShadowVault better</p>
+            
+            <div class="features-grid">
+                <div class="feature-card">
+                    <div class="feature-icon">🍴</div>
+                    <h3 class="feature-title">1. Fork & Clone</h3>
+                    <div class="code-block">
+                        <div class="code-header">
+                            <span class="code-lang">bash</span>
+                            <button class="copy-btn" onclick="copyCode(this)">Copy</button>
+                        </div>
+                        <pre><code>git clone https://github.com/YOUR_USERNAME/ShadowVault-Go-Encryptor.git
+cd ShadowVault-Go-Encryptor</code></pre>
+                    </div>
+                </div>
+
+                <div class="feature-card">
+                    <div class="feature-icon">🌿</div>
+                    <h3 class="feature-title">2. Create Branch</h3>
+                    <div class="code-block">
+                        <div class="code-header">
+                            <span class="code-lang">bash</span>
+                            <button class="copy-btn" onclick="copyCode(this)">Copy</button>
+                        </div>
+                        <pre><code>git checkout -b feature/amazing-feature</code></pre>
+                    </div>
+                </div>
+
+                <div class="feature-card">
+                    <div class="feature-icon">✨</div>
+                    <h3 class="feature-title">3. Make Changes</h3>
+                    <p class="feature-description">
+                        Write clean, tested code following the project's style guide. 
+                        Add tests for new features.
+                    </p>
+                </div>
+
+                <div class="feature-card">
+                    <div class="feature-icon">✅</div>
+                    <h3 class="feature-title">4. Test Thoroughly</h3>
+                    <div class="code-block">
+                        <div class="code-header">
+                            <span class="code-lang">bash</span>
+                            <button class="copy-btn" onclick="copyCode(this)">Copy</button>
+                        </div>
+                        <pre><code>make test
+make check-fmt</code></pre>
+                    </div>
+                </div>
+
+                <div class="feature-card">
+                    <div class="feature-icon">💾</div>
+                    <h3 class="feature-title">5. Commit Changes</h3>
+                    <div class="code-block">
+                        <div class="code-header">
+                            <span class="code-lang">bash</span>
+                            <button class="copy-btn" onclick="copyCode(this)">Copy</button>
+                        </div>
+                        <pre><code>git add .
+git commit -m "feat: add amazing feature"</code></pre>
+                    </div>
+                </div>
+
+                <div class="feature-card">
+                    <div class="feature-icon">🚀</div>
+                    <h3 class="feature-title">6. Submit PR</h3>
+                    <div class="code-block">
+                        <div class="code-header">
+                            <span class="code-lang">bash</span>
+                            <button class="copy-btn" onclick="copyCode(this)">Copy</button>
+                        </div>
+                        <pre><code>git push origin feature/amazing-feature</code></pre>
+                    </div>
+                    <p class="feature-description" style="margin-top: 1rem;">
+                        Then open a Pull Request on GitHub with a clear description.
+                    </p>
+                </div>
+            </div>
+            
+            <div class="alert alert-success">
+                <strong>🎯 High-Impact Areas:</strong>
+                <ul class="content-list">
+                    <li>Parallel snapshot creation and restoration</li>
+                    <li>Enhanced peer reputation system</li>
+                    <li>Plugin architecture for custom backends</li>
+                    <li>Web dashboard for monitoring</li>
+                    <li>Advanced chunking algorithms (Rabin fingerprinting)</li>
+                    <li>Automated garbage collection</li>
+                    <li>Snapshot diffing and incremental backups</li>
+                    <li>Encrypted key rotation mechanisms</li>
+                </ul>
+            </div>
+        </div>
+    </section>
+
+    <!-- File Structure Section -->
+    <section id="file-structure">
+        <div class="container">
+            <h2 class="section-title">📁 Project Structure</h2>
+            <p class="section-subtitle">Understanding the codebase organization</p>
+            
+            <div class="code-block">
+                <div class="code-header">
+                    <span class="code-lang">tree</span>
+                    <button class="copy-btn" onclick="copyCode(this)">Copy</button>
+                </div>
+                <pre><code>ShadowVault-Go-Encryptor/
+├── cmd/                          # Command-line applications
+│   ├── backup-agent/             # Main daemon & snapshot CLI
+│   ├── backup-agent-restore/     # Restore agent CLI
+│   └── peerctl/                  # Peer management CLI
+├── internal/                     # Internal packages
+│   ├── agent/                    # Core agent logic
+│   ├── auth/                     # Authentication & ACL
+│   ├── chunker/                  # Content-defined chunking
+│   ├── crypto/                   # Encryption primitives
+│   ├── identity/                 # Identity management
+│   ├── p2p/                      # libp2p networking
+│   ├── persistence/              # bbolt database wrappers
+│   ├── protocol/                 # Protocol message handlers
+│   ├── snapshots/                # Snapshot creation/restoration
+│   ├── storage/                  # Content-addressed storage
+│   └── versioning/               # Snapshot versioning
+├── proto/                        # Protocol Buffer definitions
+│   ├── common.proto
+│   ├── snapshot.proto
+│   ├── block.proto
+│   ├── peer.proto
+│   ├── auth.proto
+│   ├── identity.proto
+│   └── service.proto
+├── scripts/                      # Helper shell scripts
+│   ├── bootstrap.sh              # Initial setup
+│   ├── snapshot.sh               # Snapshot wrapper
+│   └── restore.sh                # Restore wrapper
+├── tools/                        # Utility programs
+│   └── hashfile.c                # SHA-256 verification tool
+├── packages/                     # Web assets (this wiki)
+│   ├── styles.css
+│   └── script.js
+├── config.yaml                   # Configuration file
+├── docker-compose.yml            # Multi-node orchestration
+├── Dockerfile                    # Container image definition
+├── entrypoint.sh                 # Main entry point script
+├── Makefile                      # Build automation
+├── go.mod                        # Go module definition
+├── LICENSE                       # MIT License
+├── README.md                     # Project documentation
+└── index.html                    # This wiki page</code></pre>
+            </div>
+        </div>
+    </section>
+
+    <!-- License Section -->
+    <section id="license">
+        <div class="container">
+            <h2 class="section-title">⚖️ License</h2>
+            <p class="section-subtitle">Open source under the MIT License</p>
+            
+            <div class="code-block">
+                <div class="code-header">
+                    <span class="code-lang">text</span>
+                    <button class="copy-btn" onclick="copyCode(this)">Copy</button>
+                </div>
+                <pre><code>MIT License
+
+Copyright (c) 2025 Son Nguyen
+
+Permission is hereby granted, free of charge, to any person obtaining a copy
+of this software and associated documentation files (the "Software"), to deal
+in the Software without restriction, including without limitation the rights
+to use, copy, modify, merge, publish, distribute, sublicense, and/or sell
+copies of the Software, and to permit persons to whom the Software is
+furnished to do so, subject to the following conditions:
+
+The above copyright notice and this permission notice shall be included in all
+copies or substantial portions of the Software.
+
+THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR
+IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY,
+FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT. IN NO EVENT SHALL THE
+AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER
+LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM,
+OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
+SOFTWARE.</code></pre>
+            </div>
+        </div>
+    </section>
+
+    <!-- Footer -->
+    <footer>
+        <div class="container">
+            <div class="footer-content">
+                <div class="footer-section">
+                    <h3>🔐 ShadowVault</h3>
+                    <p>
+                        A privacy-preserving, decentralized encrypted backup agent built with Go, libp2p, 
+                        and cryptographic best practices.
+                    </p>
+                    <p style="margin-top: 1rem;">
+                        <strong>Version:</strong> 1.0.0<br>
+                        <strong>Go:</strong> 1.21+<br>
+                        <strong>License:</strong> MIT
+                    </p>
+                </div>
+                
+                <div class="footer-section">
+                    <h3>Quick Links</h3>
+                    <ul>
+                        <li><a href="#overview">Overview</a></li>
+                        <li><a href="#quickstart">Quick Start</a></li>
+                        <li><a href="#documentation">Documentation</a></li>
+                        <li><a href="#contributing">Contributing</a></li>
+                    </ul>
+                </div>
+                
+                <div class="footer-section">
+                    <h3>Resources</h3>
+                    <ul>
+                        <li><a href="https://github.com/hoangsonww/ShadowVault-Go-Encryptor" target="_blank">GitHub Repository</a></li>
+                        <li><a href="https://github.com/hoangsonww/ShadowVault-Go-Encryptor/issues" target="_blank">Report Issues</a></li>
+                        <li><a href="https://github.com/hoangsonww/ShadowVault-Go-Encryptor/discussions" target="_blank">Discussions</a></li>
+                        <li><a href="https://pkg.go.dev/github.com/hoangsonww/backupagent" target="_blank">Go Package Docs</a></li>
+                    </ul>
+                </div>
+                
+                <div class="footer-section">
+                    <h3>Technologies</h3>
+                    <ul>
+                        <li><a href="https://go.dev" target="_blank">Go Language</a></li>
+                        <li><a href="https://libp2p.io" target="_blank">libp2p</a></li>
+                        <li><a href="https://etcd.io/docs/latest/dev-guide/bbolt/" target="_blank">bbolt</a></li>
+                        <li><a href="https://protobuf.dev" target="_blank">Protocol Buffers</a></li>
+                    </ul>
+                </div>
+            </div>
+            
+            <div class="footer-bottom">
+                <p>
+                    © <span id="currentYear">2025</span> Son Nguyen. Released under the MIT License.
+                    Built with ❤️ for privacy and security.
+                </p>
+            </div>
+        </div>
+    </footer>
+
+    <!-- Scroll to Top Button -->
+    <div class="scroll-top" id="scrollTop">
+        <span>↑</span>
+    </div>
+
+    <!-- Scripts -->
+    <script src="packages/script.js"></script>
+</body>
+</html>
