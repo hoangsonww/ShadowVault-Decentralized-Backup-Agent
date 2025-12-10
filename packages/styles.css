@@ -431,21 +431,30 @@ section {
 /* Code Blocks */
 .code-block {
   background: var(--code-bg);
-  padding: 1.5rem;
   border-radius: 0.75rem;
   border: 1px solid var(--border-color);
-  overflow-x: auto;
   margin: 1.5rem 0;
   position: relative;
+  overflow: hidden;
 }
 
 .code-header {
   display: flex;
   justify-content: space-between;
   align-items: center;
-  margin-bottom: 1rem;
+  padding: 1rem 1.5rem;
   padding-bottom: 0.75rem;
   border-bottom: 1px solid var(--border-color);
+  background: var(--code-bg);
+  position: sticky;
+  left: 0;
+  top: 0;
+  z-index: 1;
+}
+
+.code-block pre {
+  padding: 1rem 1.5rem;
+  overflow-x: auto;
 }
 
 .code-lang {
